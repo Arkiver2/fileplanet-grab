@@ -17,64 +17,21 @@ end
 
 wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri, verdict, reason)
   local url = urlpos["url"]["url"]
+  local ishtml = urlpos["link_expect_html"]
 
   -- Skip redirect from mysite.verizon.net and members.bellatlantic.net
-  if url == "http://entertainment.verizon.com/" then
-    return false
-  elseif string.match(url, "bellatlantic%.net/([^/]+)/") or
-    string.match(url, "verizon%.net/([^/]+)/") then
-    if item_type == "verizon" then
-      local directory_name_verizon = string.match(url, "verizon%.net/([^/]+)/")
-      directory_name_verizon = string.gsub(directory_name_verizon, '%%7E', '~')
-      if directory_name_verizon ~= item_value then
-        -- do not want someone else's homepage
-        -- io.stdout:write("\n Reject " .. url .. " " .. directory_name_verizon .. "\n")
-        -- io.stdout:flush()
-        return false
-      else
-        return verdict
-      end
-    elseif item_type == "bellatlantic" then
-      local directory_name_bellatlantic = string.match(url, "bellatlantic%.net/([^/]+)/")
-      directory_name_bellatlantic = string.gsub(directory_name_bellatlantic, '%%7E', '~')
-      if directory_name_bellatlantic ~= item_value then
-        -- do not want someone else's homepage
-        -- io.stdout:write("\n Reject " .. url .. " " .. directory_name_bellatlantic .. "\n")
-        -- io.stdout:flush()
-        return false
-      else
-        return verdict
-      end
-    elseif item_type == "bellatlantic36pack" then
-      local directory_name_bellatlantic36pack = string.match(url, "bellatlantic%.net/([^/]+)/")
-      directory_name_bellatlantic36pack = string.gsub(directory_name_bellatlantic36pack, '%%7E', '~')
-      if not string.match(directory_name_bellatlantic36pack, item_value) then
-        -- do not want someone else's homepage
-        -- io.stdout:write("\n Reject " .. url .. " " .. directory_name_bellatlantic36pack .. "\n")
-        -- io.stdout:flush()
-        return false
-      else
-        return verdict
-      end
-    elseif item_type == "verizon36pack" then
-      local directory_name_verizon36pack = string.match(url, "verizon%.net/([^/]+)/")
-      directory_name_verizon36pack = string.gsub(directory_name_verizon36pack, '%%7E', '~')
-      if not string.match(directory_name_verizon36pack, item_value) then
-        -- do not want someone else's homepage
-        -- io.stdout:write("\n Reject " .. url .. " " .. directory_name_verizon36pack .. "\n")
-        -- io.stdout:flush()
-        return false
-      else
-        return verdict
-      end
+  if item_type == "download" then
+    if string.match(url, item_value) then
+      return true
+    elseif string.match(url, "download%.fileplanet") then
+      return true
+    elseif ishtml == 1 then
+      return false
     else
-      -- shouldn't reach here!
-      assert(false)
+      return verdict
     end
-  elseif string.match(url, "//////////") then
-    return false
   else
-    return verdict
+    return false
   end
 end
 
@@ -88,11 +45,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   io.stdout:flush()
   if status_code >= 500 or
     (status_code >= 400 and status_code ~= 404 and status_code ~= 403) then
-    if string.match(url["host"], "verizon%.net") or
-      string.match(url["host"], "bellatlantic%.net") then
-      if status_code == 423 then
-        return wget.actions.ABORT
-      end
+    if string.match(url["host"], "fileplanet%.com") then
       
       io.stdout:write("\nServer returned "..http_stat.statcode..". Sleeping.\n")
       io.stdout:flush()
