@@ -197,7 +197,27 @@ class WgetArgs(object):
         assert item_type in ('download')
         
         if item_type == 'download':
-            if 100000 <= item_value <= 109999:
+            if 000000 <= item_value <= 009999:
+                item_range = 000000
+            elif 010000 <= item_value <= 019999:
+                item_range = 010000
+            elif 020000 <= item_value <= 029999:
+                item_range = 020000
+            elif 030000 <= item_value <= 039999:
+                item_range = 030000
+            elif 040000 <= item_value <= 049999:
+                item_range = 040000
+            elif 050000 <= item_value <= 059999:
+                item_range = 050000
+            elif 060000 <= item_value <= 069999:
+                item_range = 060000
+            elif 070000 <= item_value <= 079999:
+                item_range = 070000
+            elif 080000 <= item_value <= 089999:
+                item_range = 080000
+            elif 090000 <= item_value <= 099999:
+                item_range = 090000
+            elif 100000 <= item_value <= 109999:
                 item_range = 100000
             elif 110000 <= item_value <= 119999:
                 item_range = 110000
@@ -217,6 +237,26 @@ class WgetArgs(object):
                 item_range = 180000
             elif 190000 <= item_value <= 199999:
                 item_range = 190000
+            elif 200000 <= item_value <= 209999:
+                item_range = 200000
+            elif 210000 <= item_value <= 219999:
+                item_range = 210000
+            elif 220000 <= item_value <= 229999:
+                item_range = 220000
+            elif 230000 <= item_value <= 239999:
+                item_range = 230000
+            elif 240000 <= item_value <= 249999:
+                item_range = 240000
+            elif 250000 <= item_value <= 259999:
+                item_range = 250000
+            elif 260000 <= item_value <= 269999:
+                item_range = 260000
+            elif 270000 <= item_value <= 279999:
+                item_range = 270000
+            elif 280000 <= item_value <= 289999:
+                item_range = 280000
+            elif 290000 <= item_value <= 299999:
+                item_range = 290000
             else:
                 raise Exception('Item_value not defined')
             if item_range:
