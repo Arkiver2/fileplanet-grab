@@ -56,9 +56,9 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = "20140903.02"
+VERSION = "20140903.01"
 USER_AGENT = 'ArchiveTeam'
-TRACKER_ID = 'verizon'
+TRACKER_ID = 'fileplanet'
 TRACKER_HOST = 'tracker.archiveteam.org'
 
 
@@ -145,7 +145,7 @@ def get_hash(filename):
 
 CWD = os.getcwd()
 PIPELINE_SHA1 = get_hash(os.path.join(CWD, 'pipeline.py'))
-LUA_SHA1 = get_hash(os.path.join(CWD, 'verizon.lua'))
+LUA_SHA1 = get_hash(os.path.join(CWD, 'fileplanet.lua'))
 
 
 def stats_id_function(item):
@@ -165,7 +165,7 @@ class WgetArgs(object):
             WGET_LUA,
             "-U", USER_AGENT,
             "-nv",
-            "--lua-script", "verizon.lua",
+            "--lua-script", "fileplanet.lua",
             "-o", ItemInterpolation("%(item_dir)s/wget.log"),
             "--no-check-certificate",
             "--output-document", ItemInterpolation("%(item_dir)s/wget.tmp"),
@@ -180,11 +180,11 @@ class WgetArgs(object):
             "--tries", "inf",
             "--span-hosts",
             "--waitretry", "30",
-            "--domains", "mysite.verizon.net,members.bellatlantic.net",
+            "--domains", "fileplanet.com",
             "--warc-file", ItemInterpolation("%(item_dir)s/%(warc_file_base)s"),
             "--warc-header", "operator: Archive Team",
-            "--warc-header", "verizon-dld-script-version: " + VERSION,
-            "--warc-header", ItemInterpolation("verizon-user: %(item_name)s"),
+            "--warc-header", "fileplanet-dld-script-version: " + VERSION,
+            "--warc-header", ItemInterpolation("fileplanet-user: %(item_name)s"),
         ]
         
         item_name = item['item_name']
@@ -194,86 +194,36 @@ class WgetArgs(object):
         item['item_type'] = item_type
         item['item_value'] = item_value
         
-        assert item_type in ('verizon', 'bellatlantic', 'bellatlantic36pack', 'verizon36pack')
+        assert item_type in ('download')
         
-        if item_type == 'verizon':
-            wget_args.append('http://mysite.verizon.net/{0}/'.format(item_value))
-        elif item_type == 'bellatlantic':
-            wget_args.append('http://members.bellatlantic.net/{0}/'.format(item_value))
-        elif item_type == 'bellatlantic36pack':
-            wget_args.append('http://members.bellatlantic.net/{0}0/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}1/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}2/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}3/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}4/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}5/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}6/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}7/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}8/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}9/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}a/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}b/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}c/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}d/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}e/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}f/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}g/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}h/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}i/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}j/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}k/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}l/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}m/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}n/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}o/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}p/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}q/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}r/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}s/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}t/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}u/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}v/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}w/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}x/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}y/'.format(item_value))
-            wget_args.append('http://members.bellatlantic.net/{0}z/'.format(item_value))
-        elif item_type == 'verizon36pack':
-            wget_args.append('http://mysite.verizon.net/{0}0/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}1/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}2/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}3/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}4/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}5/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}6/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}7/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}8/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}9/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}a/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}b/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}c/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}d/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}e/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}f/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}g/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}h/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}i/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}j/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}k/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}l/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}m/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}n/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}o/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}p/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}q/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}r/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}s/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}t/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}u/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}v/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}w/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}x/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}y/'.format(item_value))
-            wget_args.append('http://mysite.verizon.net/{0}z/'.format(item_value))
+        if item_type == 'download':
+            if 100000 <= item_value <= 109999:
+                item_range = 100000
+            elif 110000 <= item_value <= 119999:
+                item_range = 110000
+            elif 120000 <= item_value <= 129999:
+                item_range = 120000
+            elif 130000 <= item_value <= 139999:
+                item_range = 130000
+            elif 140000 <= item_value <= 149999:
+                item_range = 140000
+            elif 150000 <= item_value <= 159999:
+                item_range = 150000
+            elif 160000 <= item_value <= 169999:
+                item_range = 160000
+            elif 170000 <= item_value <= 179999:
+                item_range = 170000
+            elif 180000 <= item_value <= 189999:
+                item_range = 180000
+            elif 190000 <= item_value <= 199999:
+                item_range = 190000
+            else:
+                raise Exception('Item_value not defined')
+            if item_range:
+                wget_args.append('http://www.fileplanet.com/files/{0}/{1}.shtml'.format(item_range, item_value))
+                wget_args.append('http://www.fileplanet.com/download.aspx?f={0}'.format(item_value))
+            else:
+                raise Exception('Item_range not defined')
         else:
             raise Exception('Unknown item')
         
@@ -292,7 +242,7 @@ class WgetArgs(object):
 # This will be shown in the warrior management panel. The logo should not
 # be too big. The deadline is optional.
 project = Project(
-    title="Verizon",
+    title="Fileplanet",
     project_html="""
         <img class="project-logo" alt="Project logo" src="http://archiveteam.org/images/thumb/b/bc/Verizon_Logo.png/320px-Verizon_Logo.png" height="50px" title=""/>
         <h2>mysite.verizon.net <span class="links"><a href="http://mysite.verizon.net/">Website</a> &middot; <a href="http://tracker.archiveteam.org/verizon/">Leaderboard</a></span></h2>
@@ -306,7 +256,7 @@ pipeline = Pipeline(
     CheckIP(),
     GetItemFromTracker("http://%s/%s" % (TRACKER_HOST, TRACKER_ID), downloader,
         VERSION),
-    PrepareDirectories(warc_prefix="verizon"),
+    PrepareDirectories(warc_prefix="fileplanet"),
     WgetDownload(
         WgetArgs(),
         max_tries=2,
