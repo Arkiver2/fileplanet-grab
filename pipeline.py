@@ -285,9 +285,8 @@ project = Project(
     title="Fileplanet",
     project_html="""
         <img class="project-logo" alt="Project logo" src="http://archiveteam.org/images/thumb/b/bc/Verizon_Logo.png/320px-Verizon_Logo.png" height="50px" title=""/>
-        <h2>mysite.verizon.net <span class="links"><a href="http://mysite.verizon.net/">Website</a> &middot; <a href="http://tracker.archiveteam.org/verizon/">Leaderboard</a></span></h2>
-        <h2>members.bellatlantic.net <span class="links"><a href="htp://members.bellatlantic.net/">Website</a> &middot; <a href="http://tracker.archiveteam.org/verizon/">Leaderboard</a></span></h2>
-        <p>Archiving websites from mysite.verizon.net and members.bellatlantic.net.</p>
+        <h2>www.fileplanet.com <span class="links"><a href="http://www.fileplanet.com/">Website</a> &middot; <a href="http://tracker.archiveteam.org/fileplanet/">Leaderboard</a></span></h2>
+        <p>Archiving files and webpages from www.fileplanet.com.</p>
     """,
     utc_deadline=datetime.datetime(2014, 9, 30, 23, 59, 0)
 )
