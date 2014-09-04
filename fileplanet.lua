@@ -47,7 +47,8 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   io.stdout:flush()
   if status_code >= 500 or
     (status_code >= 400 and status_code ~= 404 and status_code ~= 403) then
-    if string.match(url["host"], "fileplanet%.com") then
+    if string.match(url["host"], "fileplanet%.com") or
+      string.match(url["host"], "download%.direct2drive%.com") then
       
       io.stdout:write("\nServer returned "..http_stat.statcode..". Sleeping.\n")
       io.stdout:flush()
