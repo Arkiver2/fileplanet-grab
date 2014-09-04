@@ -194,7 +194,7 @@ class WgetArgs(object):
         item['item_type'] = item_type
         item['item_value'] = item_value
         
-        assert item_type in ('download')
+        assert item_type in ('download', 'site')
         
         if item_type == 'download':
             if 000000 <= item_value <= 009999:
@@ -264,6 +264,8 @@ class WgetArgs(object):
                 wget_args.append('http://www.fileplanet.com/download.aspx?f={0}'.format(item_value))
             else:
                 raise Exception('Item_range not defined')
+        elif item_type == 'site':
+            wget_args.append('{0}'.format(item_value))
         else:
             raise Exception('Unknown item')
         
