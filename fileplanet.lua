@@ -18,28 +18,45 @@ end
 wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_parsed, iri, verdict, reason)
   local url = urlpos["url"]["url"]
   local ishtml = urlpos["link_expect_html"]
-
-  -- Skip redirect from mysite.verizon.net and members.bellatlantic.net
+  local parenturl = parent["url"]
+  
+  -- These arguments will be used when the link is a 'download' item
   if item_type == "download" then
+    -- Download an url if it has the item_value in the url
     if string.match(url, item_value) then
       return true
+    -- Download everything from download.fileplanet.com
     elseif string.match(url, "download%.fileplanet") then
       return true
+    -- Download everything from download.direct2drive.com
     elseif string.match(url, "download%.direct2drive%.com") then
       return true
+    -- Download one link deep on external urls
+    elseif not (string.match(parenturl, "%.fileplanet") or string.match(parenturl, "download%.direct2drive%.com")) then
+      return true
+    -- After everything, if something is a html file, do not download the file
     elseif ishtml == 1 then
       return false
+    -- Return WGET's veridct for the other links
     else
       return verdict
     end
+  -- These arguments will be used when the link is a 'site' item
   elseif item_type =='site':
+    -- Download an url if it has the item_value in the url
     if string.match(url, item_value) then
       return true
+    -- Download one link deep on external urls
+    elseif not string.match(parenturl, item_value) then
+      return true
+    -- After everything, if something is a html file, do not download the file
     elseif ishtml == 1 then
       return false
+    -- Return WGET's veridct for the other links
     else
-      return veridct
+      return verdict
     end
+  -- If the url is not from a item_type that we know of, don't download the link
   else
     return false
   end
