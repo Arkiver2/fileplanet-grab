@@ -200,23 +200,23 @@ class WgetArgs(object):
             if 000000 <= item_value <= 009999:
                 item_range = 000000
             elif 010000 <= item_value <= 019999:
-                item_range = 010000
+                item_range = 10000
             elif 020000 <= item_value <= 029999:
-                item_range = 020000
+                item_range = 20000
             elif 030000 <= item_value <= 039999:
-                item_range = 030000
+                item_range = 30000
             elif 040000 <= item_value <= 049999:
-                item_range = 040000
+                item_range = 40000
             elif 050000 <= item_value <= 059999:
-                item_range = 050000
+                item_range = 50000
             elif 060000 <= item_value <= 069999:
-                item_range = 060000
+                item_range = 60000
             elif 070000 <= item_value <= 079999:
-                item_range = 070000
+                item_range = 70000
             elif 080000 <= item_value <= 089999:
-                item_range = 080000
+                item_range = 80000
             elif 090000 <= item_value <= 099999:
-                item_range = 090000
+                item_range = 90000
             elif 100000 <= item_value <= 109999:
                 item_range = 100000
             elif 110000 <= item_value <= 119999:
