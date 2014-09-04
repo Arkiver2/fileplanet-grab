@@ -25,6 +25,8 @@ wget.callbacks.download_child_p = function(urlpos, parent, depth, start_url_pars
       return true
     elseif string.match(url, "download%.fileplanet") then
       return true
+    elseif string.match(url, "download%.direct2drive%.com") then
+      return true
     elseif ishtml == 1 then
       return false
     else
